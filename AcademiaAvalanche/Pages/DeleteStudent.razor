@@ -1,0 +1,77 @@
+﻿@page "/DeleteStudent/{CurrentID}"
+@using AcademiaAvalanche.Data
+@inject StudentService objStudentService
+@inject NavigationManager NavigationManager
+
+<h2>Excluir Aluno</h2>
+<hr />
+<h3>Deseja realmente deletar o registro?</h3>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            <label>Matricula:</label>
+            <label>@objStudent.StudentId</label>
+        </div>
+        <div class="form-group">
+            <label>Nome:</label>
+            <label>@objStudent.Name</label>
+        </div>
+        <div class="form-group">
+            <label>CPF:</label>
+            <label>@objStudent.Cpf</label>
+        </div>
+        <div class="form-group">
+            <label>RG:</label>
+            <label>@objStudent.Rg</label>
+        </div>
+        <div class="form-group">
+            <label>Início Contrato:</label>
+            <label>@objStudent.Date_Init_Cont</label>
+        </div>
+        <div class="form-group">
+            <label>Fim Contrato:</label>
+            <label>@objStudent.Date_End_Cont</label>
+        </div>
+        <div class="form-group">
+            <label>Endereço:</label>
+            <label>@objStudent.Address</label>
+        </div>
+        <div class="form-group">
+            <label>E-Mail:</label>
+            <label>@objStudent.Email</label>
+        </div>
+        <div class="form-group">
+            <label>Status:</label>
+            <label>@objStudent.Status</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <input type="button" class="btn btn-primary" @onclick="DeleteStudentInfo" value="Deletar" />
+            <input type="button" class="btn btn-primary" @onclick="Cancel" value="Cancelar" />
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string CurrentID { get; set; }
+    StudentInfo objStudent = new StudentInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        objStudent = await Task.Run(() => objStudentService.GetStudentById(Convert.ToInt32(CurrentID)));
+    }
+
+    protected void DeleteStudentInfo()
+    {
+        objStudentService.DeleteStudentInfo(objStudent);
+        NavigationManager.NavigateTo("Student");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Student");
+    }
+}

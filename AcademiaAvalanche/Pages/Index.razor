@@ -1,0 +1,51 @@
+﻿@page "/"
+@using AcademiaAvalanche.Data
+@inject StudentService objStudentService
+
+<h1>Relatório de Alunos Inadimplentes</h1>
+
+@if (objStudent == null)
+{
+    <p><em>Carregando....</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Matricula</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>RG</th>
+                <th>Início Contrato</th>
+                <th>Fim Contrato</th>
+                <th>Endereço</th>
+                <th>E-Mail</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in objStudent)
+            {
+                <tr>
+                    <td>@student.StudentId</td>
+                    <td>@student.Name</td>
+                    <td>@student.Cpf</td>
+                    <td>@student.Rg</td>
+                    <td>@student.Date_Init_Cont</td>
+                    <td>@student.Date_End_Cont</td>
+                    <td>@student.Address</td>
+                    <td>@student.Email</td>
+                    <td>@student.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    List<StudentInfo> objStudent;
+    protected override async Task OnInitializedAsync()
+    {
+        objStudent = await Task.Run(() => objStudentService.GetStudentWithPendings());
+    }
+}

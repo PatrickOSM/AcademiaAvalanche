@@ -1,0 +1,56 @@
+﻿@page "/AddTrainer"
+@using AcademiaAvalanche.Data
+@inject TrainerService objTrainerService
+@inject NavigationManager NavigationManager
+
+<h2>Adicionar Instrutor</h2>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Nome</label>
+                <input form="Name" class="form-control" @bind="@objTrainer.Name" />
+            </div>
+            <div class="form-group">
+                <label for="Cpf" class="control-label">CPF</label>
+                <input form="Cpf" class="form-control" @bind="@objTrainer.Cpf" />
+            </div>
+            <div class="form-group">
+                <label for="Rg" class="control-label">RG</label>
+                <input form="Rg" class="form-control" @bind="@objTrainer.Rg" />
+            </div>
+            <div class="form-group">
+                <label for="Address" class="control-label">Endereço</label>
+                <input form="Address" class="form-control" @bind="@objTrainer.Address" />
+            </div>
+            <div class="form-group">
+                <label for="Email" class="control-label">E-Mail</label>
+                <input form="Email" class="form-control" @bind="@objTrainer.Email" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="CreateTrainer" value="Salvar" />
+                <input type="button" class="btn btn-primary" @onclick="Cancel" value="Cancelar" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    TrainerInfo objTrainer = new TrainerInfo();
+
+    protected void CreateTrainer()
+    {
+        objTrainerService.Create(objTrainer);
+        NavigationManager.NavigateTo("Trainer");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Trainer");
+    }
+
+}

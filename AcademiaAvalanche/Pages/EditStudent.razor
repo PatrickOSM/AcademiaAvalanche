@@ -1,0 +1,83 @@
+﻿@page "/EditStudent/{CurrentID}"
+@using AcademiaAvalanche.Data
+@inject StudentService objStudentService
+@inject NavigationManager NavigationManager
+
+<h2>Editar Aluno</h2>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="StudentId" class="control-label">Matricula</label>
+                <input form="StudentId" class="form-control" disabled @bind="@objStudent.StudentId" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="control-label">Nome</label>
+                <input form="Name" class="form-control" @bind="@objStudent.Name" />
+            </div>
+            <div class="form-group">
+                <label for="Cpf" class="control-label">CPF</label>
+                <input form="Cpf" class="form-control" @bind="@objStudent.Cpf" />
+            </div>
+            <div class="form-group">
+                <label for="Rg" class="control-label">RG</label>
+                <input form="Rg" class="form-control" @bind="@objStudent.Rg" />
+            </div>
+            <div class="form-group">
+                <label for="Date_Init_Cont" class="control-label">Início Contrato</label>
+                <input type="date" class="form-control" @bind="objStudent.Date_Init_Cont" @bind:format="yyyy-MM-dd" />
+            </div>
+            <div class="form-group">
+                <label for="Date_End_Cont" class="control-label">Fim Contrato</label>
+                <input type="date" class="form-control" @bind="objStudent.Date_End_Cont" @bind:format="yyyy-MM-dd" />
+            </div>
+            <div class="form-group">
+                <label for="Address" class="control-label">Endereço</label>
+                <input form="Address" class="form-control" @bind="@objStudent.Address" />
+            </div>
+            <div class="form-group">
+                <label for="Email" class="control-label">E-Mail</label>
+                <input form="Email" class="form-control" @bind="@objStudent.Email" />
+            </div>
+            <div class="form-group">
+                <label for="Status" class="control-label">Status</label>
+                <select @bind="@objStudent.Status" class="form-control">
+                    <option value="">--Selecione o Status--</option>
+                    <option value="Adiplente">Adiplente</option>
+                    <option value="Inadiplente">Inadiplente</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="UpdateStudent" value="Salvar" />
+                <input type="button" class="btn btn-primary" @onclick="Cancel" value="Cancelar" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string CurrentID { get; set; }
+    StudentInfo objStudent = new StudentInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        objStudent = await Task.Run(() => objStudentService.GetStudentById(Convert.ToInt32(CurrentID)));
+    }
+
+    protected void UpdateStudent()
+    {
+        objStudentService.UpdateStudent(objStudent);
+        NavigationManager.NavigateTo("Student");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Student");
+    }
+
+}

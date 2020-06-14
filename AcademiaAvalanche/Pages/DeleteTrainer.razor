@@ -1,0 +1,65 @@
+﻿@page "/DeleteTrainer/{CurrentID}"
+@using AcademiaAvalanche.Data
+@inject TrainerService objTrainerService
+@inject NavigationManager NavigationManager
+
+<h2>Excluir Instrutor</h2>
+<hr />
+<h3>Deseja realmente deletar o registro?</h3>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            <label>Matricula:</label>
+            <label>@objTrainer.TrainerId</label>
+        </div>
+        <div class="form-group">
+            <label>Nome:</label>
+            <label>@objTrainer.Name</label>
+        </div>
+        <div class="form-group">
+            <label>CPF:</label>
+            <label>@objTrainer.Cpf</label>
+        </div>
+        <div class="form-group">
+            <label>RG:</label>
+            <label>@objTrainer.Rg</label>
+        </div>
+        <div class="form-group">
+            <label>Endereço:</label>
+            <label>@objTrainer.Address</label>
+        </div>
+        <div class="form-group">
+            <label>E-Mail:</label>
+            <label>@objTrainer.Email</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <input type="button" class="btn btn-primary" @onclick="DeleteTrainerInfo" value="Deletar" />
+            <input type="button" class="btn btn-primary" @onclick="Cancel" value="Cancelar" />
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string CurrentID { get; set; }
+    TrainerInfo objTrainer = new TrainerInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        objTrainer = await Task.Run(() => objTrainerService.GetTrainerById(Convert.ToInt32(CurrentID)));
+    }
+
+    protected void DeleteTrainerInfo()
+    {
+        objTrainerService.DeleteTrainerInfo(objTrainer);
+        NavigationManager.NavigateTo("Trainer");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Trainer");
+    }
+}
