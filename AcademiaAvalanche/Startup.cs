@@ -26,7 +26,7 @@ namespace AcademiaAvalanche
             services.AddScoped<StudentService>();
             services.AddScoped<TrainerService>();
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("GymAvalancheConnection")));
+            options.UseSqlite("Filename=./avalanche_gym.sqlite"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
